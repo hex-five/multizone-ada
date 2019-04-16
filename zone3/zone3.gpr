@@ -1,0 +1,25 @@
+with "../bsp/X300/zfp.gpr";
+with "../libhexfive/multizone.gpr";
+
+project Zone3 is
+
+  for Runtime ("Ada") use ZFP'Runtime("Ada");
+  for Target use ZFP'Target;
+  for Main use ("main.adb");
+  for Languages use ("Ada", "C");
+  for Source_Dirs use ("src");
+  for Object_Dir use "obj";
+  for Create_Missing_Dirs use "True";
+
+  package Compiler renames ZFP.Compiler;
+
+  package Linker is
+     for Default_Switches ("Ada") use ("-Wl,--print-memory-usage",
+                                       "-Wl,--gc-sections");
+  end Linker;
+
+  package Ide is
+     for Program_Host use ":3333";
+     for Communication_Protocol use "remote";
+  end Ide;
+end Zone3;

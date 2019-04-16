@@ -1,0 +1,7 @@
+project Libhexfive32 is
+  For Externally_Built use "true";
+  For Library_Dir use ".";
+  For Library_Name use "hexfive32";
+  For Source_Dirs use (".");
+  For Library_Kind use "static";
+end Libhexfive32;

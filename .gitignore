@@ -1,0 +1,10 @@
+*.ali
+*.ci
+*.o
+*.d
+*.stderr
+*.stdout
+obj/
+bsp/**/runtime/lib/
+bsp/**/runtime/share/
+bsp/**/runtime/**/target_properties

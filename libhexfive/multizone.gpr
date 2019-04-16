@@ -1,0 +1,6 @@
+with "libhexfive32.gpr";
+
+project MultiZone is
+    for Source_Dirs use ("ada");
+    for Object_Dir use "obj";
+end MultiZone;
