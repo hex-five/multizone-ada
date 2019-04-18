@@ -1,11 +1,12 @@
 # multizone-ada
-MultiZone™ Security Trusted Execution Environment Ada Example
+MultiZone™ Security Trusted Execution Environment for Ada developers
 
-This repository, maintained by Hex Five Security, is a companion to the
-[multizone-sdk](https://github.com/hex-five/multizone-sdk) repository, intended
-to showcase Ada running on MultiZone.
+MultiZone Security provides policy-based hardware-enforced separation for an unlimited number of security domains, with full control over data, code, peripherals and interrupts.
 
-This repo supports only the Hex Five X300 - RV32ACIMU Core for Xilinx Arty
+This repository, maintained by Hex Five Security, allows Ada developers to build robust MultiZone applications 
+[multizone-sdk](https://github.com/hex-five/multizone-sdk)
+
+This version of the sdk works with the Hex Five X300 - RV32ACIMU Core for Xilinx Arty
 A7-35T FPGA whereas MultiZone Security SDK supports the following cores /
 boards:
  - Hex Five X300 - RV32ACIMU Core for Xilinx Arty A7-35T FPGA
@@ -104,8 +105,8 @@ The system contains three zones:
    - This zone controls a robot via GPIO; if you do not have the robot then this zone simply yields for you
    - Robot commands are all issued ia messages from zone 1:
      - send 3 > - unfold
-     - send 3 1 - begin recursive dance
-     - send 3 0 - stop recursive dance when it reaches home
+     - send 3 1 - start preprogrammed sequence
+     - send 3 0 - stop preprogrammed sequence (upon reaching home position)
      - send 3 < - fold
  
 ### For More Information ###
