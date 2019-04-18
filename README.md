@@ -3,8 +3,7 @@ MultiZone™ Security Trusted Execution Environment for Ada developers
 
 MultiZone Security provides policy-based hardware-enforced separation for an unlimited number of security domains, with full control over data, code, peripherals and interrupts.
 
-This repository, maintained by Hex Five Security, allows Ada developers to build robust MultiZone applications 
-[multizone-sdk](https://github.com/hex-five/multizone-sdk)
+This repository, maintained by Hex Five Security, allows Ada developers to build robust MultiZone applications.
 
 This version of the sdk works with the Hex Five X300 - RV32ACIMU Core for Xilinx Arty
 A7-35T FPGA whereas MultiZone Security SDK supports the following cores /
