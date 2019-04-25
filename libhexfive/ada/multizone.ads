@@ -3,6 +3,7 @@
 pragma Ada_2005;
 pragma Style_Checks (Off);
 
+with Interfaces;   use Interfaces;
 with Interfaces.C; use Interfaces.C;
 with System;
 
@@ -14,11 +15,13 @@ package MultiZone is
    procedure ECALL_WFI;  -- libhexfive.h:9
    pragma Import (C, ECALL_WFI, "ECALL_WFI");
 
-   function ECALL_SEND (arg1 : int; arg2 : System.Address) return int;  -- libhexfive.h:11
-   pragma Import (C, ECALL_SEND, "ECALL_SEND");
+   type Word is new Unsigned_32;
+   type Message is array (0 .. 3) of aliased Word;
+   pragma Pack (Message);
+   subtype Zone is int range 1 .. int'Last;
 
-   function ECALL_RECV (arg1 : int; arg2 : System.Address) return int;  -- libhexfive.h:12
-   pragma Import (C, ECALL_RECV, "ECALL_RECV");
+   function Ecall_Send (to : Zone; msg : Message) return Boolean;
+   function Ecall_Recv (from : Zone; msg : out Message) return Boolean;
 
    procedure ECALL_TRP_VECT (arg1 : int; arg2 : System.Address);  -- libhexfive.h:14
    pragma Import (C, ECALL_TRP_VECT, "ECALL_TRP_VECT");

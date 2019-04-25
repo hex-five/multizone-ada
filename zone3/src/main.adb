@@ -16,7 +16,6 @@ with Interfaces.C; use Interfaces.C;
 
 procedure Main is
    type User_LED_Select is access all User_LED;
-   type Message is array (0 .. 3) of UInt32;
    type Cmd is array (0 .. 2) of UInt8;
 
    CMD_DUMMY : constant Cmd := (others => 16#FF#);
@@ -43,17 +42,17 @@ begin
       declare
         USB_ATTACH : constant Message := (0 => 1, others => 0);
         USB_DETACH : constant Message := (0 => 2, others => 0);
-        Status : int;
+        Status : Boolean;
       begin
         if rx_data /= usb_state then
           usb_state := rx_data;
 
           if rx_data = UInt32'(16#12670000#) then
             LED := Green_LED'Access;
-            Status := ECALL_SEND (1, USB_ATTACH'Address);
+            Status := Ecall_Send (1, USB_ATTACH);
           else
             LED := Red_LED'Access;
-            Status := ECALL_SEND (1, USB_DETACH'Address);
+            Status := Ecall_Send (1, USB_DETACH);
             owi_task_stop_request;
           end if;
         end if;
@@ -81,9 +80,9 @@ begin
 
       declare
         msg : Message;
-        Status : int := ECALL_RECV (1, msg'Address);
+        Status : Boolean := Ecall_Recv (1, msg);
       begin
-        if Status = 1 then
+        if Status then
           -- OWI sequence select
           if usb_state = 16#12670000# then
             case msg(0) is
@@ -97,7 +96,7 @@ begin
 
           -- Ping Pong & Change LED color
           if msg(0) = Character'Pos('p') and msg(1) = Character'Pos('i') and msg(2) = Character'Pos('n') and msg(3) = Character'Pos('g') then
-            Status := ECALL_SEND (1, msg'Address);
+            Status := Ecall_Send (1, msg);
           elsif msg(0) = Character'Pos('r') and msg(1) = Character'Pos('e') and msg(2) = Character'Pos('d') then
             LED := Red_LED'Access;
           elsif msg(0) = Character'Pos('g') and msg(1) = Character'Pos('r') and msg(2) = Character'Pos('e') and msg(3) = Character'Pos('e') then
