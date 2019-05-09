@@ -33,65 +33,11 @@
 ------------------------------------------------------------------------------
 
 with HAL; use HAL;
-with SiFive_SVD.OTP_Mem; use SiFive_SVD.OTP_mem;
-with SiFive_SVD.PRIC;    use SiFive_SVD.PRIC;
-with SiFive_SVD.SPI;     use SiFive_SVD.SPI;
 
 with FE310_SVD;
 
 package FE310 is
-
    LF_Clock_Frequency : constant := 32768;
-
-   function CPU_Frequency return UInt32;
-   --  Compute CPU frequency
-
-   procedure Load_Internal_Oscilator_Calibration;
-   --  Read the calibration setting from the OTP memory ant write it to the
-   --  oscillator configuration register.
-   --  After execution of this procedure, the (undivided) internal oscillator
-   --  frequency should be about 72 MHz
-
-   subtype PLL_Output_Divider is Integer range 1 .. 128;
-
-   procedure Use_Crystal_Oscillator (Divider : PLL_Output_Divider := 1)
-     with Pre => (Divider = 1) or (Divider rem 2 = 0);
-
-   subtype Internal_Oscillator_Divider is Integer range 1 .. 64;
-
-   procedure Use_Internal_Oscillator (Divider : Internal_Oscillator_Divider := 5);
-
-   type PLL_Reference is new SiFive_SVD.PRIC.PLLCFG_REFSEL_Field;
-
-   subtype PLL_R is Integer range 1 .. 4;
-   subtype PLL_F is Integer range 2 .. 128;
-
-   type PLL_Q is (Div_By_2, Div_By_4, Div_By_8);
-
-   procedure Use_PLL (Reference : PLL_Reference;
-                      Internal_Osc_Div : Internal_Oscillator_Divider  := 5;
-                      R_Div : PLL_R;
-                      F_Mul : PLL_F;
-                      Q_Div : PLL_Q;
-                      Output_Div : PLL_Output_Divider)
-     with Pre => ((Internal_Osc_Div >= 2) and (Internal_Osc_Div <= 12)) and
-                 (F_Mul rem 2 = 0);
-
-
-   subtype SPI_Clock_Divider is Integer range 2 .. 8192;
-
-   procedure Set_SPI_Flash_Clock_Divider (Divider : SPI_Clock_Divider)
-     with Pre => Divider rem 2 = 0;
-
-   function SPI_Flash_Clock_Divider return SPI_Clock_Divider;
-
-private
-
-   OTP_Mem_Periph : aliased OTP_Mem_Peripheral with Import, Volatile, Address => FE310_SVD.OTP_Mem_Base;
-   PRIC_Periph    : aliased PRIC_Peripheral with Import, Volatile, Address => FE310_SVD.PRIC_Base;
-   QSPI0_Periph   : aliased QSPI_Peripheral with Import, Volatile, Address => FE310_SVD.QSPI0_Base;
-
-   for PLL_Q use (Div_By_2 => 1, Div_By_4 => 2, Div_By_8 => 3);
-
+   CPU_Frequency : constant := 65_000_000;
 end FE310;
 
