@@ -63,15 +63,11 @@ begin
         declare
           cmd_word : UInt32 := owi_task_run(CLINT.Machine_Time);
           cmd_bytes : Cmd;
-
-          function UInt32_To_UInt8 is new Ada.Unchecked_Conversion
-            (Source => UInt32,
-             Target => UInt8);
         begin
           if cmd_word /= -1 then
-            cmd_bytes(0) := UInt32_To_UInt8 (cmd_word);
-            cmd_bytes(1) := UInt32_To_UInt8 (Shift_Right (cmd_word,  8));
-            cmd_bytes(2) := UInt32_To_UInt8 (Shift_Right (cmd_word, 16));
+            cmd_bytes(0) := UInt8 (cmd_word and 16#FF#);
+            cmd_bytes(1) := UInt8 (Shift_Right (cmd_word,  8) and 16#FF#);
+            cmd_bytes(2) := UInt8 (Shift_Right (cmd_word, 16) and 16#FF#);
             rx_data := spi_rw (cmd_bytes'Address);
             ping_timer := CLINT.Machine_Time + PING_TIME;
           end if;
